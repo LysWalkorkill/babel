@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc2223 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2223.xml">
+<!ENTITY rfc2578 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2578.xml">
+<!ENTITY rfc2579 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2579.xml">
+<!ENTITY rfc2580 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2580.xml">
+<!ENTITY rfc2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
+<!ENTITY rfc3410 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3410.xml">
+<!ENTITY rfc4181 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4181.xml">
+]>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+
+<!-- Document  section
+
+Specify the category attribute per RFC2026
+options are info, std, bcp, or exp.
+
+docname is the name of the output document. This is optional;
+the default is to use the base portion of the XML filename.
+
+For Internet-drafts, indicate which intellectual property notice
+to use per the rules of RFC3978. The value (as of this template) can be:
+trust200902 -
+noModificationTrust200902 -
+noDerivativesTrust200902 -
+pre5378Trust200902 -
+
+The Intellectual Property section will be generated automatically by
+XML2RFC, based on the ipr attribute in the rfc element.
+
+If this document obsoletes an RFC, specify the RFC in the "obsoletes" attribute
+If this document updates an RFC, specify the RFC in the "updates" attribute
+-->
+<rfc category="historic" docName="RFC - Babel" ipr="noModificationTrust200902">
+<front>
+<!--
+    Enter the full document title and an abbreviated version
+    to use in the page header.
+-->
+
+<title abbrev="Babel">Babel</title>
+
+<!-- copy the author block as many times as needed, one for each author.-->
+
+<!-- If the author is acting as editor, use the <role=editor> attribute-->
+
+<!-- see RFC2223 for guidelines regarding author names -->
+
+<author fullname="Bourgeois Benjamin" initials="BB" role="editor"
+        surname="Bourgeois Benjamin">
+  <organization>Epitech</organization>
+
+  <address>
+
+    <email>benjamin.bourgeois@epitech.eu</email>
+  </address>
+</author>
+
+<author fullname="Ettel Jamil" initials="EJ" role="editor"
+        surname="Ettel Jamil">
+  <organization>Epitech</organization>
+
+  <address>
+
+    <email>jamil.ettel@epitech.eu</email>
+  </address>
+</author>
+
+<author fullname="Guillaume Romain" initials="GR" role="editor"
+        surname="Guillaume Romain">
+  <organization>Epitech</organization>
+
+  <address>
+
+    <email>romain.guillaume@epitech.eu</email>
+  </address>
+</author>
+
+<author fullname="Lecomte Amaury" initials="LA" role="editor"
+        surname="Lecomte Amaury">
+  <organization>Epitech</organization>
+
+  <address>
+
+    <email>amaury.lecomte@epitech.eu</email>
+  </address>
+</author>
+
+<!-- month and day will be generated automatically by XML2RFC;
+     be sure the year is current.-->
+
+<date  year="2020" />
+
+<!--WG name at the upperleft corner of the doc,
+    IETF is fine for non-WG IETF submissions -->
+
+<workgroup>Internet Engineering Task Force</workgroup>
+
+<keyword>Network Management</keyword>
+
+<keyword>Management Information Base</keyword>
+
+</front>
+
+<middle>
+  <section title="Introduction">
+    <!--You can echo the abstract in the Introduction, providing citations here,
+        but you should provide more than just the abstract. -->
+
+    <t>This memo defines how to use network management protocols in the My
+      Teams project.</t>
+
+  </section>
+
+  <section title="Conventions">
+
+    <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+    document are to be interpreted as described in BCP 14, RFC 2119 <xref
+    target="RFC2119"></xref>.</t>
+
+  </section>
+
+  <!-- ********************************************* -->
+
+  <section title="Overview">
+
+    <t></t>
+
+  </section>
+
+
+  <section title="Client">
+
+    <section title="Overview">
+
+      <t>
+        The client must be able to connect to a server, to send
+        multiple commands to it, to receive replies
+        from it and to display the information to the user.
+      </t>
+      <t>
+        The client must send command in a specific format described
+        later and should display the reply in a human readable format.
+      </t>
+      <t>
+        You can find commands and reply-codes in Commands
+        Section(6) and Reply-Codes Section(7)
+      </t>
+      <t>
+        Upon connection, the client will receive a 200 OK response.
+      </t>
+      <t></t>
+
+    </section>
+
+    <section title="Send">
+
+      <t>
+        The client must send commands to server in a particular
+        format. Each command must be sent with a specific header
+        as follows:
+      </t>
+
+      <figure>
+        <artwork>
+          <![CDATA[
+
+struct Header __attribute__((packed))
+{
+    unsigned short command;
+    int messageSize;
+};
+          ]]>
+        </artwork>
+      </figure>
+
+      <t>
+        command: An unsigned short from this list corresponding to
+        the command associated with the requests and responses. Allowed commands
+        are:
+      </t>
+
+      <figure>
+        <artwork>
+          <![CDATA[
+
+enum Response
+{
+    TRY = 100,
+    RINGING = 180,
+    OK = 200,
+    USER_REGISTERED = 220,
+    USER_LOGGED_IN = 221,
+    USER_LOGGED_OUT = 222,
+    CONTACTS = 240,
+    INFO_CONTACT = 241,
+    BAD_REQUEST = 400,
+    UNAUTHORIZED = 401,
+    NOT_FOUND = 404,
+    INTERNAL_ERROR = 500,
+    UNAVAILABLE = 503
+};
+
+enum Request
+{
+    INVITE = 1,
+    ACK = 2,
+    MESSAGE = 3,
+    CANCEL = 10,
+    BYE = 15,
+    REGISTER = 20,
+    LOGIN = 21,
+    LOGOUT = 22,
+    CONTACTS = 30,
+    NOTIFY_CONTACT = 31,
+    INFO_CONTACT = 32
+};
+          ]]>
+        </artwork>
+      </figure>
+
+      <t>
+        messageSize: The total size in bytes of all arguments
+        of the associated command after the header.
+      </t>
+
+      <t>
+        <list style="symbols">
+          <t>
+            The header has a fixed size (6 bytes).
+          </t>
+          <t>
+            The client should verify the number and
+            type of each argument of the associated command.
+            There is another verification server side.
+          </t>
+          <t>
+            The header is followed by the command's arguments.
+          </t>
+        </list>
+      </t>
+
+    </section>
+
+    <section title="Receive">
+
+      <t>
+        The client receives replies and requests from the server in a particular
+        format. Each reply and request begins with a header (same as the client's header)
+        and ends with the arguments.
+      </t>
+
+      <t>
+        The server uses the same requests and replies as the client.
+      </t>
+    </section>
+
+  </section>
+
+  <section title="Server">
+    <section title="Overview">
+
+      <t>
+        The server must be able to accept multiple clients, to send replies to a specific client, and to broadcast a message to multiple clients.
+      </t>
+      <t>
+	    The server must be able to keep track of users.
+        Any client with a valid user account must be able to access this data.
+        The server should store the data so it can be reused after a restart.
+      </t>
+
+    </section>
+
+    <section title="Send">
+
+      <t>
+        The server must answer clients' requests with replies.
+        A reply starts with a header describing the reply (unsigned short: fisrt two bytes) and the size of the arguments (int: last four bytes).
+        The header is followed by the arguments of the reply.
+      </t>
+      <t>
+        You may use the following structure for server replies:
+      </t>
+
+      <figure>
+        <artwork>
+          <![CDATA[
+
+struct Header __attribute__((packed))
+{
+    unsigned short command;
+    int messageSize;
+};
+          ]]>
+        </artwork>
+      </figure>
+
+      <t>
+        command represents the reply code. Please refer to the Reply Code section for more information.
+      </t>
+      <t>
+        messaegeSize represents the size of the arguments. Arguments are detailed in the Reply Code section.
+      </t>
+
+      <t>
+        When receiving a new connection, the sever must send an 200 OK response.
+      </t>
+
+
+    </section>
+
+    <section title="Receive">
+
+      <t>
+        When a client sends a request, the server receives a header
+        with an unsigned short (2 bytes), representing the command, and an int (4 bytes)
+        for the message size.
+      </t>
+      <t>
+        You may use the same structure used for replies.
+      </t>
+
+      <t>
+        The server should wait for the full message to be received before processing the request.
+      </t>
+
+    </section>
+  </section>
+
+  <section title="Requests">
+
+    <section title="Invite">
+      <figure>
+        <artwork>
+          <![CDATA[
+Send - to server
+
+- {Header (Request: 1, messageSize: 6B)} + {userID: 4B, port: 2B}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Send - to client
+
+- {Header (Request: 1, messageSize: 10B)} + {userID: 4B, ipv4: 4B, port: 2B}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Receive
+
+- 100: Trying
+- 400: BAD_REQUEST
+- 401: UNAUTHORIZED
+- 404: NOT_FOUND
+            ]]>
+        </artwork>
+      </figure>
+    </section>
+
+    <section title="Ack">
+      <figure>
+        <artwork>
+          <![CDATA[
+Send
+
+- {Header (Request: 2, messageSize: 0B)}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Receive
+
+- 400: BAD_REQUEST
+- 401: UNAUTHORIZED
+- 404: NOT_FOUND
+            ]]>
+        </artwork>
+      </figure>
+    </section>
+
+    <section title="Register">
+      <figure>
+        <artwork>
+          <![CDATA[
+Send
+
+- {Header (Request: 20, messageSize: 100B)} + {username: 50B, password: 50B}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Receive
+
+- 220: USER_REGISTERED + username
+- 400: BAD_REQUEST
+
+if request succeeded:
+- 240: CONTACTS + {userId (4B) + status (1B) + username (50B)} * {users in db}
+            ]]>
+        </artwork>
+      </figure>
+    </section>
+
+    <section title="Login">
+      <figure>
+        <artwork>
+          <![CDATA[
+Send
+
+- {Header (Request: 21, messageSize: 100B)} + {username: 50B, password: 50B}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Receive
+
+- 221: USER_LOGGED_IN + username (50B)
+- 400: BAD_REQUEST
+
+if request succeeded (per contact in DB):
+- 240: CONTACTS + {userId (4B) + status (1B) + username (50B)} * {users in db}
+            ]]>
+        </artwork>
+      </figure>
+    </section>
+
+    <section title="Logout">
+      <figure>
+        <artwork>
+          <![CDATA[
+Send
+
+- {Header (Request: 22, messageSize: 0B)}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Receive
+
+- 222: USER_LOGGED_OUT
+- 400: BAD_REQUEST
+            ]]>
+        </artwork>
+      </figure>
+    </section>
+
+    <section title="Contacts">
+      <figure>
+        <artwork>
+          <![CDATA[
+Send
+
+- {Header (Request: 30, messageSize: 0B)}
+            ]]>
+        </artwork>
+      </figure>
+      <figure>
+        <artwork>
+          <![CDATA[
+Receive
+
+- 401: UNAUTHORIZED
+
+if request succeeded (per contact in DB):
+- 240: CONTACTS + userId (4B) + status (1B) + username (50B)
+            ]]>
+        </artwork>
+      </figure>
+    </section>
+
+  </section>
+
+  <section title="Reply Codes">
+
+    <section title="1XX">
+      <t>
+        The following reply codes are used for operations that are not done yet. The client or server will have to wait for another reply after receiving a 1XX reply.
+      </t>
+
+      <t>100: Trying.
+      </t>
+
+      <t>180: TRYING (sent by client).
+      <list style="symbols">
+        <t>port (2B): port that the other client should connect to.</t>
+      </list>
+      </t>
+
+      <t>180: TRYING (sent by server).
+      <list style="symbols">
+        <t>port (4B): ip that the client should connect to.</t>
+        <t>port (2B): port that the client should connect to.</t>
+      </list>
+      </t>
+
+    </section>
+
+    <section title="2XX">
+
+      <t>The following reply codes are used for success. They are sent to the user making the request. Here is a list of all of the success reply codes, and their meaning:
+      </t>
+
+      <t>200: Command OK.
+      </t>
+
+      <t>220: User registered.
+      <list style="symbols">
+        <t>username (50B): username of the registered user.</t>
+      </list>
+      </t>
+
+      <t>221: User registered.
+      <list style="symbols">
+        <t>username (50B): username of the registered user.</t>
+      </list>
+      </t>
+
+      <t>222: User logged out.
+      </t>
+
+      <t>240: Contacts.
+      <list style="symbols">
+        <t>userId (4B): id of the user.</t>
+        <t>status (1B): 0 for disconnected, 1 for connected.</t>
+        <t>username (50B): username of the registered user.</t>
+      </list>
+      </t>
+
+    </section>
+
+    <section title="4XX">
+      <t>The followning reply codes are used for user errors. They are sent to the user from the server. Here is a list of all of the error reply codes:</t>
+
+      <t>
+        400: Bad request.
+      </t>
+      
+      <t>
+        401: Unauthorized.
+      </t>
+
+      <t>
+        404: Not found.
+      </t>
+
+    </section>
+
+    <section title="5XX">
+      <t>The followning reply codes are used for server errors. They are sent to the user from the server. Here is a list of all of the error reply codes:</t>
+
+      <t>
+        500: Bad request.
+      </t>
+
+      <t>
+        503: Unauthorized.
+      </t>
+
+    </section>
+
+  </section>
+
+</middle>
+
+<back>
+
+  <!-- References Section -->
+
+  <!-- Section 4.7f of [RFC2223bis] specifies the requirements for the
+       references sections.  In particular, there MUST be separate lists of
+       normative and informative references, each in a separate section.
+       The style SHOULD follow that of recently published RFCs.
+
+The standard MIB boilerplate available at
+the OPS Area web site includes lists of
+normative and informative references that MUST appear in all IETF
+specifications that contain MIB modules.  If items from other MIB
+modules appear in an IMPORTS statement in the Definitions section,
+then the specifications containing those MIB modules MUST be included
+in the list of normative references.  When items are imported from an
+IANA-maintained MIB module the corresponding normative reference
+SHALL reference the on-line version of that MIB module.  It is the
+policy of the RFC Editor that all references must be cited in the
+text;  such citations MUST appear in the overview section where
+documents containing imported definitions (other than those already
+mentioned in the MIB boilerplate) are required to be mentioned (cf.
+Section 3.2).
+
+In general, each normative reference SHOULD reference the most recent
+version of the specification in question.
+  -->
+
+  <references title="Normative References">
+    <!-- [TEMPLATE TODO] rfc2119, 2578, 2579, and 2580 are required to support MIB
+         module boilerplate text. -->
+
+    &rfc2119;
+
+    &rfc2578;
+
+    &rfc2579;
+
+    &rfc2580;
+
+  </references>
+
+  <references title="Informative References">
+
+    <!--  RFC3410 is required to support the boilerplate text.-->
+    &rfc2223;
+    &rfc3410;
+
+    &rfc2629;
+
+  </references>
+
+  <references title="URL References">
+    <reference anchor="idguidelines">
+      <front>
+        <title>http://www.ietf.org/ietf/1id-guidelines.txt</title>
+        <author>
+          <organization>IETF Internet Drafts editor</organization>
+        </author>
+        <date year=""></date>
+      </front>
+    </reference>
+    <reference anchor="xml2rfc">
+      <front>
+        <title>http://xml.resource.org</title>
+        <author>
+          <organization>XML2RFC tools and documentation</organization>
+        </author>
+        <date year=""></date>
+      </front>
+    </reference>
+    <reference anchor="ietf">
+      <front>
+        <title>http://tools.ietf.org</title>
+        <author>
+          <organization>IETF Tools Team</organization>
+        </author>
+        <date year=""></date>
+      </front>
+    </reference>
+
+  </references>
+</back>
+</rfc>
